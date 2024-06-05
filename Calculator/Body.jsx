@@ -73,25 +73,31 @@ const Body = ({ currentMode }) => {
       setInput("Error");
     }
   };
+  const handleDelete = () => {
+    setInput(prevInput => prevInput.slice(0, -1));
+  };
 
   const buttons = {
     standard: [
+      "C",
+      "÷",
+      "×",
+      "⌫",
       "7",
       "8",
       "9",
-      "/",
+      "%",
       "4",
       "5",
       "6",
-      "*",
+      "-",
       "1",
       "2",
       "3",
-      "-",
-      "C",
+      "+",
       "0",
-      "=",
-      "+"
+      ".",
+      "="
     ],
     scientific: [
       "sin",
@@ -105,11 +111,11 @@ const Body = ({ currentMode }) => {
       "7",
       "8",
       "9",
-      "/",
+      "÷",
       "4",
       "5",
       "6",
-      "*",
+      "×",
       "1",
       "2",
       "3",
@@ -117,7 +123,8 @@ const Body = ({ currentMode }) => {
       "C",
       "0",
       "=",
-      "+"
+      "+",
+      "%"
     ],
     programmer: [
       "bin",
@@ -131,19 +138,20 @@ const Body = ({ currentMode }) => {
       "7",
       "8",
       "9",
-      "/",
+      "÷",
       "4",
       "5",
       "6",
-      "*",
+      "×",
       "1",
       "2",
       "3",
       "-",
       "C",
       "0",
-      "=",
-      "+"
+      "+",
+      "%",
+      "="
     ]
   };
 
@@ -156,10 +164,29 @@ const Body = ({ currentMode }) => {
         {buttons[currentMode].map((buttonValue, index) =>
           <TouchableOpacity
             key={index}
-            style={styles.button}
+            style={[
+              styles.button,
+              buttonValue === "C" ||
+              buttonValue === "×" ||
+              buttonValue === "÷"
+                ? { backgroundColor: "#1DABE0" }
+                : {},
+              buttonValue === "⌫" ||
+              buttonValue === "%" ||
+              buttonValue === "+" ||
+              buttonValue === "-" ||
+              buttonValue === "="
+                ? { backgroundColor: "#25CB91" }
+                : {},
+              buttonValue === "0"
+                ? { width: "40%",fontSize: 50,}
+                : {}
+            ]}
             onPress={() => {
               if (buttonValue === "C") {
                 handleClear();
+              } else if (buttonValue === "⌫") {
+                handleDelete();
               } else if (buttonValue === "=") {
                 handleCalculate();
               } else if (
@@ -176,8 +203,11 @@ const Body = ({ currentMode }) => {
             <Text
               style={[
                 styles.buttonText,
-                buttonValue === "C" ? { color: "red" } : {},
-                buttonValue === "=" ? { color: "black" , fontWeight: "900" , fontSize: 35 } : {}
+                buttonValue === "C" ? { color: "black" } : {},
+                buttonValue === "="
+                  ? { fontWeight: "900", fontSize: 35 }
+                  : {},
+                
               ]}
             >
               {buttonValue}
@@ -192,17 +222,21 @@ const Body = ({ currentMode }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: "relative",
+    top: 100,
     justifyContent: "center",
     alignItems: "center"
   },
   input: {
-    fontSize: 32,
+    fontSize: 62,
     marginBottom: 20,
-    backgroundColor: "#FFF",
-    padding: 10,
+    color: "#fff",
+    position: "absolute",
+    top: 0,
     borderRadius: 10,
     width: "85%", // Adjusted width
-    height: 60,
+    height: 200,
+    overflow: "scroll",
     textAlign: "right"
   },
   buttonsContainer: {
@@ -230,7 +264,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#FFF"
   }
-
 });
 
 export default Body;
