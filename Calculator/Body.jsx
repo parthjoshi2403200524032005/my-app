@@ -168,7 +168,7 @@ const Body = ({ currentMode }) => {
               styles.button,
               buttonValue === "C" ||
               buttonValue === "*" ||
-              buttonValue === "÷"
+              buttonValue === "/"
                 ? { backgroundColor: "#1DABE0" }
                 : {},
               buttonValue === "⌫" ||
