@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { evaluate, parse } from 'mathjs';
 
 const Body = ({ currentMode }) => {
   const [input, setInput] = useState("");
@@ -14,10 +15,11 @@ const Body = ({ currentMode }) => {
 
   const handleCalculate = () => {
     try {
-      const result = eval(input);
+      const node = parse(input);
+      const result = node.evaluate();
       setInput(result.toString());
     } catch (error) {
-      setInput("Error");
+      setInput("");
     }
   };
 
@@ -26,22 +28,22 @@ const Body = ({ currentMode }) => {
       let result;
       switch (operation) {
         case "sin":
-          result = Math.sin(parseFloat(input));
+          result = evaluate(`sin(${input})`);
           break;
         case "cos":
-          result = Math.cos(parseFloat(input));
+          result = evaluate(`cos(${input})`);
           break;
         case "tan":
-          result = Math.tan(parseFloat(input));
+          result = evaluate(`tan(${input})`);
           break;
         case "log":
-          result = Math.log10(parseFloat(input));
+          result = evaluate(`log10(${input})`);
           break;
         case "ln":
-          result = Math.log(parseFloat(input));
+          result = evaluate(`log(${input})`);
           break;
         case "sqrt":
-          result = Math.sqrt(parseFloat(input));
+          result = evaluate(`sqrt(${input})`);
           break;
         default:
           result = "Error";
@@ -57,13 +59,13 @@ const Body = ({ currentMode }) => {
       let result;
       switch (operation) {
         case "bin":
-          result = parseInt(input, 10).toString(2);
+          result = (parseInt(input, 10) >>> 0).toString(2);
           break;
         case "oct":
-          result = parseInt(input, 10).toString(8);
+          result = (parseInt(input, 10) >>> 0).toString(8);
           break;
         case "hex":
-          result = parseInt(input, 10).toString(16).toUpperCase();
+          result = (parseInt(input, 10) >>> 0).toString(16).toUpperCase();
           break;
         default:
           result = "Error";
@@ -73,6 +75,7 @@ const Body = ({ currentMode }) => {
       setInput("Error");
     }
   };
+
   const handleDelete = () => {
     setInput(prevInput => prevInput.slice(0, -1));
   };
@@ -176,7 +179,7 @@ const Body = ({ currentMode }) => {
                 ? { backgroundColor: "#25CB91" }
                 : {},
               buttonValue === "0"
-                ? { width: "40%",fontSize: 50,}
+                ? { width: "40%" }
                 : {}
             ]}
             onPress={() => {
@@ -204,7 +207,6 @@ const Body = ({ currentMode }) => {
                 buttonValue === "="
                   ? { fontWeight: "900", fontSize: 35 }
                   : {},
-                
               ]}
             >
               {buttonValue}
@@ -231,7 +233,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     borderRadius: 10,
-    width: "85%", // Adjusted width
+    width: "85%",
     height: 200,
     overflow: "scroll",
     textAlign: "right"
