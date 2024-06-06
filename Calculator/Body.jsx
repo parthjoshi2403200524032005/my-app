@@ -46,11 +46,11 @@ const Body = ({ currentMode }) => {
           result = evaluate(`sqrt(${input})`);
           break;
         default:
-          result = "Error";
+          result = "";
       }
       setInput(result.toString());
     } catch (error) {
-      setInput("Error");
+      setInput("");
     }
   };
 
@@ -68,11 +68,11 @@ const Body = ({ currentMode }) => {
           result = (parseInt(input, 10) >>> 0).toString(16).toUpperCase();
           break;
         default:
-          result = "Error";
+          result = "";
       }
       setInput(result.toString());
     } catch (error) {
-      setInput("Error");
+      setInput("");
     }
   };
 
