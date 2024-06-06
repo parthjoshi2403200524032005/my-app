@@ -80,8 +80,8 @@ const Body = ({ currentMode }) => {
   const buttons = {
     standard: [
       "C",
-      "÷",
-      "×",
+      "/",
+      "*",
       "⌫",
       "7",
       "8",
@@ -111,11 +111,11 @@ const Body = ({ currentMode }) => {
       "7",
       "8",
       "9",
-      "÷",
+      "/",
       "4",
       "5",
       "6",
-      "×",
+      "*",
       "1",
       "2",
       "3",
@@ -138,11 +138,11 @@ const Body = ({ currentMode }) => {
       "7",
       "8",
       "9",
-      "÷",
+      "/",
       "4",
       "5",
       "6",
-      "×",
+      "*",
       "1",
       "2",
       "3",
@@ -167,7 +167,7 @@ const Body = ({ currentMode }) => {
             style={[
               styles.button,
               buttonValue === "C" ||
-              buttonValue === "×" ||
+              buttonValue === "*" ||
               buttonValue === "÷"
                 ? { backgroundColor: "#1DABE0" }
                 : {},
