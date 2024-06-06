@@ -1,6 +1,7 @@
+// Body.js
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { evaluate, parse } from 'mathjs';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
+import { evaluate, parse } from "mathjs";
 
 const Body = ({ currentMode }) => {
   const [input, setInput] = useState("");
@@ -103,31 +104,32 @@ const Body = ({ currentMode }) => {
       "="
     ],
     scientific: [
+      "C",
+      "/",
+      "*",
+      "⌫",
       "sin",
       "cos",
       "tan",
+      "%",
       "log",
       "ln",
       "sqrt",
+      "-",
       "(",
       ")",
       "7",
       "8",
       "9",
-      "/",
       "4",
       "5",
       "6",
-      "*",
       "1",
       "2",
       "3",
-      "-",
-      "C",
       "0",
-      "=",
-      "+",
-      "%"
+      ".",
+      "="
     ],
     programmer: [
       "bin",
@@ -149,26 +151,48 @@ const Body = ({ currentMode }) => {
       "-",
       "C",
       "0",
+      "⌫",
       "+",
       "%",
       "="
     ]
   };
 
+  // Define styles based on the current mode
+  let inputStyle;
+  if (currentMode === "standard") {
+    inputStyle = styles.standardInput;
+  } else if (currentMode === "scientific") {
+    inputStyle = styles.scientificInput;
+  } else if (currentMode === "programmer") {
+    inputStyle = styles.programmerInput;
+  }
+
+  let inputComponent;
+  if (currentMode === "standard" || currentMode === "scientific") {
+    inputComponent = (
+      <Text style={[styles.input, inputStyle]}>{input}</Text>
+    );
+  } else if (currentMode === "programmer") {
+    inputComponent = (
+      <TextInput
+        style={[styles.input, inputStyle]}
+        value={input}
+        onChangeText={text => setInput(text)}
+      />
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.input}>
-        {input}
-      </Text>
+      {inputComponent}
       <View style={styles.buttonsContainer}>
-        {buttons[currentMode].map((buttonValue, index) =>
+        {buttons[currentMode].map((buttonValue, index) => (
           <TouchableOpacity
             key={index}
             style={[
               styles.button,
-              buttonValue === "C" ||
-              buttonValue === "*" ||
-              buttonValue === "/"
+              buttonValue === "C" || buttonValue === "*" || buttonValue === "/"
                 ? { backgroundColor: "#1DABE0" }
                 : {},
               buttonValue === "⌫" ||
@@ -178,9 +202,7 @@ const Body = ({ currentMode }) => {
               buttonValue === "="
                 ? { backgroundColor: "#25CB91" }
                 : {},
-              buttonValue === "0"
-                ? { width: "40%" }
-                : {}
+              buttonValue === "0" ? { width: "40%" } : {}
             ]}
             onPress={() => {
               if (buttonValue === "C") {
@@ -203,16 +225,14 @@ const Body = ({ currentMode }) => {
             <Text
               style={[
                 styles.buttonText,
-                buttonValue === "C" ? { color: "black" } : {},
-                buttonValue === "="
-                  ? { fontWeight: "900", fontSize: 35 }
-                  : {},
+                buttonValue === "C" ? {} : {},
+                buttonValue === "=" ? { fontWeight: "900", fontSize: 35 } : {}
               ]}
             >
               {buttonValue}
             </Text>
           </TouchableOpacity>
-        )}
+        ))}
       </View>
     </View>
   );
@@ -226,7 +246,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  input: {
+  input: {},
+  standardInput: {
     fontSize: 62,
     marginBottom: 20,
     color: "#fff",
@@ -237,6 +258,22 @@ const styles = StyleSheet.create({
     height: 200,
     overflow: "scroll",
     textAlign: "right"
+  },
+  scientificInput: {
+    fontSize: 62,
+    marginBottom: 20,
+    // color: "#fff",
+    position: "absolute",
+    top: 0,
+
+    width: "85%",
+    height: 200,
+    overflow: "scroll",
+    textAlign: "right"
+    // Add styles for scientific mode input
+  },
+  programmerInput: {
+    // Add styles for programmer mode input
   },
   buttonsContainer: {
     flexDirection: "row",
